@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +38,16 @@ public class MainActivity extends AppCompatActivity {
                sqldb= mydb.getWritableDatabase();
                 mydb.onUpgrade(sqldb,1,2);
                 sqldb.close();
+            }
+        });
+        butInsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sqldb=mydb.getWritableDatabase();
+                String sql="insert into IdolTable values('"+editName.getText()+"',"+editCount.getText()+")";
+                sqldb.execSQL(sql);
+                sqldb.close();
+                Toast.makeText(MainActivity.this,"저장완료!",Toast.LENGTH_LONG).show();//저장된거 알림
             }
         });
     }
