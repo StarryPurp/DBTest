@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                sqldb= mydb.getWritableDatabase();
                 mydb.onUpgrade(sqldb,1,2);
                 sqldb.close();
+                selectTable();
             }
         });
         butInsert.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 sqldb.execSQL(sql);
                 sqldb.close();
                 Toast.makeText(MainActivity.this,"저장완료!",Toast.LENGTH_LONG).show();//저장된거 알림
+                selectTable();
             }
         });
         butUpdate.setOnClickListener(new View.OnClickListener() {
@@ -61,18 +63,20 @@ public class MainActivity extends AppCompatActivity {
                 sqldb.execSQL(sql);
                 sqldb.close();
                 Toast.makeText(MainActivity.this,"수정완료!",Toast.LENGTH_LONG).show();//수정된거 알림
+                selectTable();
             }
         });
         butDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sqldb= mydb.getWritableDatabase();
-                String sql="delete IdolTable where idolName='"+editName.getText()+"'";
-                mydb.onUpgrade(sqldb,1,2);
+                String sql="delete from idolTable where idolName='"+editName.getText()+"'";
+                sqldb.execSQL(sql);
                 sqldb.close();
+                Toast.makeText(MainActivity.this,"해당 단어 삭제!",Toast.LENGTH_LONG).show();//수정된거 알림
+                selectTable();
             }
         });
-
         butSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,8 +93,26 @@ public class MainActivity extends AppCompatActivity {
                 editResultCount.setText(counts);
                 cursor.close();
                 sqldb.close();
+                selectTable();
             }
         });
+
+        selectTable();
+    }
+    public void selectTable(){
+        sqldb=mydb.getReadableDatabase();
+        String sql="select * from IdolTable";
+        Cursor cursor=sqldb.rawQuery(sql,null);
+        String names="Idol 이름"+"\r\n"+"==========="+"\r\n";
+        String counts="Idol 인원수"+"\r\n"+"==========="+"\r\n";
+        while(cursor.moveToNext()) {
+            names += cursor.getString(0)+"\r\n";
+            counts +=cursor.getInt(1)+"\r\n";
+        }
+        editResultName.setText(names);
+        editResultCount.setText(counts);
+        cursor.close();
+        sqldb.close();
     }
     class MyDBHelper extends SQLiteOpenHelper{
     //IdolDB라는 이름의 데이터베이스가 생성됨
