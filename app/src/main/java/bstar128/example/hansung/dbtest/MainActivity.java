@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     EditText editName,editCount,editResultName,editResultCount;
-    Button butInit, butInsert,butSelect,butUpdate;
+    Button butInit, butInsert,butSelect,butUpdate,butDelete;
     MyDBHelper mydb;
     SQLiteDatabase sqldb;
 
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         butInsert=(Button)findViewById(R.id.but_insert);
         butSelect=(Button)findViewById(R.id.but_select);
         butUpdate=(Button)findViewById(R.id.but_update);
+        butDelete=(Button)findViewById(R.id.but_delete);
 
         //DB 생성
         mydb=new MyDBHelper(this);
@@ -56,13 +57,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sqldb=mydb.getWritableDatabase();
-                String sql="insert into IdolTable values('"+editName.getText()+"',"+editCount.getText()+")";
+                String sql="update IdolTable set idolCount="+editCount.getText()+" where idolName='"+editName.getText()+"'";
                 sqldb.execSQL(sql);
                 sqldb.close();
-                Toast.makeText(MainActivity.this,"수정완료!",Toast.LENGTH_LONG).show();//저장된거 알림
+                Toast.makeText(MainActivity.this,"수정완료!",Toast.LENGTH_LONG).show();//수정된거 알림
             }
         });
-
+        butDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sqldb= mydb.getWritableDatabase();
+                String sql="delete IdolTable where idolName='"+editName.getText()+"'";
+                mydb.onUpgrade(sqldb,1,2);
+                sqldb.close();
+            }
+        });
 
         butSelect.setOnClickListener(new View.OnClickListener() {
             @Override

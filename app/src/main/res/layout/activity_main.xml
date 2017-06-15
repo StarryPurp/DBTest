@@ -43,12 +43,12 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/but_init"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="초기화"
-        />
+        <Button
+            android:id="@+id/but_init"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="초기화" />
+
         <Button
             android:id="@+id/but_insert"
             android:layout_width="wrap_content"
@@ -66,6 +66,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="조회"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/but_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="삭제"
             />
     </LinearLayout>
     <LinearLayout
